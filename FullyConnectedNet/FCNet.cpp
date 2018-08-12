@@ -21,11 +21,11 @@ void FCNet::setCostFunction(CostFunctions costFunc) {
 
 }
 
-void FCNet::setOptimization(Optimiser opt, int batchSize = 32) {
+void FCNet::setOptimization(Optimiser opt, int batchSize) {
 
 }
 
-bool FCNet::trainNetwork(Eigen::MatrixXd X, Eigen::MatrixXi Y, int numEpochs = 25, double learningRate = 0.001, bool plotCost = false) {
+bool FCNet::trainNetwork(Eigen::MatrixXd X, Eigen::MatrixXi Y, int numEpochs, double learningRate, bool plotCost) {
 
 	return true;
 }
@@ -36,8 +36,8 @@ Eigen::MatrixXi FCNet::predict(Eigen::MatrixXd X) {
 }
 
 void FCNet::drawPlot(cimg_library::CImgDisplay& disp, std::vector<double> x, std::vector<double> y,
-	double minX = 0.0f, double maxX = 15.0f, double minY = 0.0f, double maxY = 1.0f,
-	std::string xLabel = "xAxis", std::string yLabel = "yAxis") {
+	double minX, double maxX, double minY, double maxY,
+	std::string xLabel, std::string yLabel) {
 
 	const unsigned char lineColour[] = { 0,0,0 };// i.e. black
 	int bgFillColour = 255;// i.e. white

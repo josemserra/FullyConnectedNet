@@ -20,15 +20,14 @@ public:
 	static enum Optimiser {grad_desc_fcn };
 
 	static void drawPlot(cimg_library::CImgDisplay& disp, std::vector<double> x, std::vector<double> y,
-		double minX, double maxX, double minY, double maxY,
-		std::string xLabel, std::string yLabel);
-
+		double minX = 0.0f, double maxX = 15.0f, double minY = 0.0f, double maxY = 1.0f,
+		std::string xLabel = "xAxis", std::string yLabel = "yAxis");
 
 	void setInputLayerSize(int nX);
 	void addLayer(int nh, ActivationFunctions actFunc);
 	void setCostFunction(CostFunctions costFunc);
-	void setOptimization(Optimiser opt, int batchSize);
-	bool trainNetwork(Eigen::MatrixXd X, Eigen::MatrixXi Y, int numEpochs, double learningRate, bool plotCost);
+	void setOptimization(Optimiser opt, int batchSize = 32);
+	bool trainNetwork(Eigen::MatrixXd X, Eigen::MatrixXi Y, int numEpochs = 25, double learningRate = 0.001, bool plotCost = false);
 	Eigen::MatrixXi predict(Eigen::MatrixXd X);
 
 private:
