@@ -1,38 +1,39 @@
 #include "FCNet.h"
 
-FCNet::FCNet()
-{
+FCNet::FCNet() {
 }
 
-
-FCNet::~FCNet()
-{
+FCNet::~FCNet() {
 }
 
 void FCNet::setInputLayerSize(int nX) {
-
+	inputLayerSize = nX;
 }
 
-void FCNet::addLayer(int nh, ActivationFunctions actFunc) {
-
+void FCNet::addLayer(int nh, ActivationFunction* actFunc) {
+	layersInfo.push_back(std::tuple<int, ActivationFunction*>(nh, actFunc));
+	numHiddenLayers++;
 }
 
 void FCNet::setCostFunction(CostFunctions costFunc) {
-
+	this->costFunc = costFunc;
 }
 
 void FCNet::setOptimization(Optimiser opt, int batchSize) {
-
+	this->opt = opt;
+	this->batchSize = batchSize;
 }
 
 bool FCNet::trainNetwork(Eigen::MatrixXd X, Eigen::MatrixXi Y, int numEpochs, double learningRate, bool plotCost) {
+	//ToDo
 
 	return true;
 }
 
-Eigen::MatrixXi FCNet::predict(Eigen::MatrixXd X) {
+Eigen::MatrixXd FCNet::predict(Eigen::MatrixXd X, double treshold) {
+	//ToDo
 
-	return Eigen::MatrixXi();
+	return Eigen::MatrixXd();
 }
 
 void FCNet::drawPlot(cimg_library::CImgDisplay& disp, std::vector<double> x, std::vector<double> y,

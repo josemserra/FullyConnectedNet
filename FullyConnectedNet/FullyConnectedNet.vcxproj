@@ -149,6 +149,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ActivationFunction.h" />
     <ClInclude Include="FCNet.h" />
     <ClInclude Include="IO_Manager.h" />
     <ClInclude Include="stdafx.h" />

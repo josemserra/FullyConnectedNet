@@ -188,8 +188,8 @@ void BatchGradientDescent(Eigen::MatrixXd X, Eigen::MatrixXi X_Classes, Eigen::M
 		int processedBatches = 0;
 		while ((processedBatches + batchSize) < numTrainingSamples) {
 
-			Eigen::MatrixXd batch = X.block(0, processedBatches, X.rows(), numTrainingSamples - processedBatches);
-			Eigen::MatrixXi batchClasses = X_Classes.block(0, processedBatches, 1, numTrainingSamples - processedBatches);
+			Eigen::MatrixXd batch = X.block(0, processedBatches, X.rows(), batchSize);
+			Eigen::MatrixXi batchClasses = X_Classes.block(0, processedBatches, 1, batchSize);
 
 			Eigen::MatrixXd preds = ForwardPropagation(weights, b, batch);
 
@@ -272,9 +272,9 @@ double CalcError(Eigen::MatrixXd real_Y, Eigen::MatrixXd pred_Y) {
 	return error;
 }
 
-
-
-int main() {
+void LoadAllData(bool loadDBFromFiles, int imgRescaleValue,
+	Eigen::MatrixXd &TrainingSamples, Eigen::MatrixXi &TrainingSamplesClasses,
+	Eigen::MatrixXd &DevSamples, Eigen::MatrixXi &DevSamplesClasses) {
 
 	std::string trainFolderDogs = "../Img/Train/Dogs";
 	std::string trainFolderNotDogs = "../Img/Train/Not Dogs";
@@ -282,12 +282,7 @@ int main() {
 	std::string devFolderNotDogs = "../Img/Dev/Not Dogs";
 	std::string testFolder = "../Img/Test";
 
-	bool loadDBFromFiles = false;
-	int imgRescaleValue = 64;
-
 	//Initialisation Load Dataset -------------------
-	Eigen::MatrixXd TrainingSamples;
-	Eigen::MatrixXi TrainingSamplesClasses;
 	//Class 1 - Dogs
 	//Class 2 - Not Dogs
 	if (loadDBFromFiles) {
@@ -301,8 +296,6 @@ int main() {
 		IO_Manager::Serialise(TrainingSamplesClasses, "../Cereal Database/TrainingSamplesClasses.eigm");
 	}
 
-	Eigen::MatrixXd DevSamples;
-	Eigen::MatrixXi DevSamplesClasses;
 	//Class 1 - Dogs
 	//Class 2 - Not Dogs
 	if (loadDBFromFiles) {
@@ -315,6 +308,23 @@ int main() {
 		IO_Manager::Serialise(DevSamples, "../Cereal Database/DevSamples.eigm");
 		IO_Manager::Serialise(DevSamplesClasses, "../Cereal Database/DevSamplesClasses.eigm");
 	}
+
+}
+
+
+int main() {
+
+	bool loadDBFromFiles = true;
+	int imgRescaleValue = 64;
+
+	Eigen::MatrixXd TrainingSamples;
+	Eigen::MatrixXi TrainingSamplesClasses;
+	Eigen::MatrixXd DevSamples;
+	Eigen::MatrixXi DevSamplesClasses;
+
+	LoadAllData(loadDBFromFiles, imgRescaleValue,
+		TrainingSamples, TrainingSamplesClasses,
+		DevSamples, DevSamplesClasses);
 
 	//Initialisation --------------------------------
 	Eigen::MatrixXd weights;

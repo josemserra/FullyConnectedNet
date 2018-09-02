@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Activation Functions">
+      <UniqueIdentifier>{e497c6ce-a98f-4ebe-8fce-f5b4ce25b626}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -29,6 +32,9 @@
     </ClInclude>
     <ClInclude Include="FCNet.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActivationFunction.h">
+      <Filter>Activation Functions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
