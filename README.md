@@ -1,7 +1,7 @@
 # Fully Connected Network
 Binary Classification with a Fully Connected Network
 
-Visual Studio (2015) project with for binay classification using a fully connected network (FCN). This project extends the one [here](https://github.com/josemserra/LogRegressionInNNContext), which implemented binary classification with only one node.
+Visual Studio (2015) project for binay classification using a fully connected network (FCN). This project extends the one [here](https://github.com/josemserra/LogRegressionInNNContext), which implemented binary classification with only one node.
 
 ## Step 1)
 - Set up the project, by copying the previous implementation and organizing the classes for better readability/code organization/maintnence;
