@@ -6,6 +6,46 @@ FCNet::FCNet() {
 FCNet::~FCNet() {
 }
 
+bool FCNet::initialiseNetworkStructure() {
+	//Checks
+	if (inputLayerSize == 0) {
+		std::cout << "The input size was not specified. \n";
+		return false;
+	}
+
+	if (numHiddenLayers == 0) {
+		std::cout << "No hidden layers were added. Please add some hidden layers. \n";
+		return false;
+	}
+
+	if (std::get<0>(layersInfo[layersInfo.size()-1]) != 1) {
+		std::cout << "Currently, this project only supports binary classification or regression for one output value. The last layer can only have one node. \n";
+		return false;
+	}
+
+	layers_weights.clear();
+	layers_b.clear();
+
+	srand(1); // Just to force random to always generate the same randoms (good for tests purposes)
+
+	Eigen::MatrixXd weights = Eigen::MatrixXd::Random(std::get<0>(layersInfo[0]), inputLayerSize)*0.01; //keep values small
+	Eigen::VectorXd b = Eigen::VectorXd::Zero(std::get<0>(layersInfo[0]), 1);
+
+	layers_weights.push_back(weights);
+	layers_b.push_back(b);
+
+	for (int layerIdx = 1; layerIdx < numHiddenLayers; layerIdx++) {
+
+		Eigen::MatrixXd weights_temp = Eigen::MatrixXd::Random(std::get<0>(layersInfo[layerIdx]), std::get<0>(layersInfo[layerIdx - 1]))*0.01; //keep values small
+		Eigen::VectorXd b_temp = Eigen::VectorXd::Zero(std::get<0>(layersInfo[layerIdx]), 1);
+
+		layers_weights.push_back(weights_temp);
+		layers_b.push_back(b_temp);
+	}
+
+	return true;
+}
+
 void FCNet::setInputLayerSize(int nX) {
 	inputLayerSize = nX;
 }
@@ -24,13 +64,25 @@ void FCNet::setOptimization(Optimiser opt, int batchSize) {
 	this->batchSize = batchSize;
 }
 
-bool FCNet::trainNetwork(Eigen::MatrixXd X, Eigen::MatrixXi Y, int numEpochs, double learningRate, bool plotCost) {
+bool FCNet::trainNetwork(Eigen::MatrixXd X, Eigen::MatrixXi Y, 
+	int numEpochs, double learningRate, bool plotCost) {
+	
+	if (!initialiseNetworkStructure())
+		return false;
+
+	
 	//ToDo
 
 	return true;
 }
 
 Eigen::MatrixXd FCNet::predict(Eigen::MatrixXd X, double treshold) {
+	//Check
+	if (layers_weights.size() == 0) {
+		std::cout << "Something went wrong with training. Aborting predict. \n";
+		return Eigen::MatrixXd();
+	}
+
 	//ToDo
 
 	return Eigen::MatrixXd();

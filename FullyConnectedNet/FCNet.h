@@ -44,7 +44,9 @@ public:
 
 private:
 	//Internal methods
-		//TODO
+
+	//Initialises the weights and biases for each layer
+	bool initialiseNetworkStructure();
 
 
 	//Network properties

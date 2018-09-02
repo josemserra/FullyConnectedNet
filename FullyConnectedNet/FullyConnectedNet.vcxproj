@@ -152,14 +152,20 @@
     <ClInclude Include="ActivationFunction.h" />
     <ClInclude Include="FCNet.h" />
     <ClInclude Include="IO_Manager.h" />
+    <ClInclude Include="ReLU_FCN.h" />
+    <ClInclude Include="Sigmoid_FCN.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Tanh_FCN.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FCNet.cpp" />
     <ClCompile Include="FullyConnectedNet.cpp" />
     <ClCompile Include="IO_Manager.cpp" />
+    <ClCompile Include="ReLU_FCN.cpp" />
+    <ClCompile Include="Sigmoid_FCN.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Tanh_FCN.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

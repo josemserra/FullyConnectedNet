@@ -11,6 +11,10 @@
 #include "CImg.h"
 #include <Eigen/Dense>
 
+#include "Sigmoid_FCN.h"
+#include "Tanh_FCN.h"
+#include "ReLU_FCN.h"
+
 #include "IO_Manager.h"
 #include "FCNet.h"
 
@@ -326,53 +330,74 @@ int main() {
 		TrainingSamples, TrainingSamplesClasses,
 		DevSamples, DevSamplesClasses);
 
-	//Initialisation --------------------------------
-	Eigen::MatrixXd weights;
-	Eigen::VectorXd b;
-	InitializeNeuron(imgRescaleValue, weights, b);
+	
+	FCNet myNet;
 
-	//Single Fwd Prop Step --------------------------
-	Eigen::MatrixXd preds = ForwardPropagation(weights, b, TrainingSamples);
+	//Define Network --------------------------------
+	myNet.setInputLayerSize(imgRescaleValue*imgRescaleValue * 3);
+	myNet.addLayer(7, new ReLU_FCN);
+	myNet.addLayer(2, new Sigmoid_FCN);
+	myNet.setCostFunction(FCNet::CostFunctions::cross_entropy_fcn);
+	myNet.setOptimization(FCNet::Optimiser::grad_desc_fcn, -1); //Use the full on each epoch
 
-	//Calc cost after Fwd Prop ----------------------
-	double cost = CalculateCost(preds, TrainingSamplesClasses.cast <double>());
+	//Train Network --------------------------------
+	myNet.trainNetwork(TrainingSamples, TrainingSamplesClasses, 150, 0.01, true);
 
-	//Single Back Prop Step -------------------------
-	Eigen::MatrixXd dw;
-	Eigen::MatrixXd db;
-	BackwardPropagation(TrainingSamples, preds, TrainingSamplesClasses.cast <double>(), dw, db);
+	//Use the Network to predict output --------------------------------
+	std::cout << "Training--------- \n";
+	Eigen::MatrixXd preds = myNet.predict(TrainingSamples);
 
-	//Train with Gradient Descent -------------------
-	InitializeNeuron(imgRescaleValue, weights, b);
-	GradientDescent(TrainingSamples, TrainingSamplesClasses, weights, b, 150, 0.001, true);
 
-	preds = ForwardPropagation(weights, b, TrainingSamples);
-	cost = CalculateCost(preds, TrainingSamplesClasses.cast <double>());
 
-	std::cout << "Final Training Cost: " << cost << "\n";
-	preds = Predict(weights, b, TrainingSamples);
-	std::cout << "Train set with Gradient Descent Accuracy: " << 100 - CalcError(TrainingSamplesClasses.cast <double>(), preds) * 100 << "\n";
-	preds = Predict(weights, b, DevSamples);
-	std::cout << "Dev set with Gradient Descent Accuracy: " << 100 - CalcError(DevSamplesClasses.cast <double>(), preds) * 100 << "\n";
 
-	std::cout << "-------------------------------------------------------\n";
 
-	//Train with Batch Gradient Descent -------------
-	Eigen::MatrixXd weights_Batch;
-	Eigen::VectorXd b_Batch;
-	InitializeNeuron(imgRescaleValue, weights_Batch, b_Batch);
-	BatchGradientDescent(TrainingSamples, TrainingSamplesClasses, weights_Batch, b_Batch, 32, 150, 0.001, true);
+	////Initialisation --------------------------------
+	//Eigen::MatrixXd weights;
+	//Eigen::VectorXd b;
+	//InitializeNeuron(imgRescaleValue, weights, b);
 
-	preds = ForwardPropagation(weights_Batch, b_Batch, TrainingSamples);
-	cost = CalculateCost(preds, TrainingSamplesClasses.cast <double>());
+	////Single Fwd Prop Step --------------------------
+	//Eigen::MatrixXd preds = ForwardPropagation(weights, b, TrainingSamples);
 
-	std::cout << "Final Training Cost: " << cost << "\n";
-	preds = Predict(weights_Batch, b_Batch, TrainingSamples);
-	std::cout << "Train set with Batch Gradient Descent Accuracy: " << 100 - CalcError(TrainingSamplesClasses.cast <double>(), preds) * 100 << "\n";
-	preds = Predict(weights_Batch, b_Batch, DevSamples);
-	std::cout << "Dev set with Batch Gradient Descent Accuracy: " << 100 - CalcError(DevSamplesClasses.cast <double>(), preds) * 100 << "\n";
+	////Calc cost after Fwd Prop ----------------------
+	//double cost = CalculateCost(preds, TrainingSamplesClasses.cast <double>());
 
-	std::cout << "-------------------------------------------------------\n";
+	////Single Back Prop Step -------------------------
+	//Eigen::MatrixXd dw;
+	//Eigen::MatrixXd db;
+	//BackwardPropagation(TrainingSamples, preds, TrainingSamplesClasses.cast <double>(), dw, db);
+
+	////Train with Gradient Descent -------------------
+	//InitializeNeuron(imgRescaleValue, weights, b);
+	//GradientDescent(TrainingSamples, TrainingSamplesClasses, weights, b, 150, 0.001, true);
+
+	//preds = ForwardPropagation(weights, b, TrainingSamples);
+	//cost = CalculateCost(preds, TrainingSamplesClasses.cast <double>());
+
+	//std::cout << "Final Training Cost: " << cost << "\n";
+	//preds = Predict(weights, b, TrainingSamples);
+	//std::cout << "Train set with Gradient Descent Accuracy: " << 100 - CalcError(TrainingSamplesClasses.cast <double>(), preds) * 100 << "\n";
+	//preds = Predict(weights, b, DevSamples);
+	//std::cout << "Dev set with Gradient Descent Accuracy: " << 100 - CalcError(DevSamplesClasses.cast <double>(), preds) * 100 << "\n";
+
+	//std::cout << "-------------------------------------------------------\n";
+
+	////Train with Batch Gradient Descent -------------
+	//Eigen::MatrixXd weights_Batch;
+	//Eigen::VectorXd b_Batch;
+	//InitializeNeuron(imgRescaleValue, weights_Batch, b_Batch);
+	//BatchGradientDescent(TrainingSamples, TrainingSamplesClasses, weights_Batch, b_Batch, 32, 150, 0.001, true);
+
+	//preds = ForwardPropagation(weights_Batch, b_Batch, TrainingSamples);
+	//cost = CalculateCost(preds, TrainingSamplesClasses.cast <double>());
+
+	//std::cout << "Final Training Cost: " << cost << "\n";
+	//preds = Predict(weights_Batch, b_Batch, TrainingSamples);
+	//std::cout << "Train set with Batch Gradient Descent Accuracy: " << 100 - CalcError(TrainingSamplesClasses.cast <double>(), preds) * 100 << "\n";
+	//preds = Predict(weights_Batch, b_Batch, DevSamples);
+	//std::cout << "Dev set with Batch Gradient Descent Accuracy: " << 100 - CalcError(DevSamplesClasses.cast <double>(), preds) * 100 << "\n";
+
+	//std::cout << "-------------------------------------------------------\n";
 
 	return 0;
 }
