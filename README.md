@@ -14,3 +14,6 @@ Visual Studio (2015) project for binay classification using a fully connected ne
 - Added new definition of network;
 - Added dummies for the activation functions;
 
+## Step 2)
+- Implemented forward pass for the sigmoid, tanh and ReLU activation functions
+- Implemented ForwardPropagation method 

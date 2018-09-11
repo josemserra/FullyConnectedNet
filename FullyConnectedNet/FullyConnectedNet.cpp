@@ -336,12 +336,12 @@ int main() {
 	//Define Network --------------------------------
 	myNet.setInputLayerSize(imgRescaleValue*imgRescaleValue * 3);
 	myNet.addLayer(7, new ReLU_FCN);
-	myNet.addLayer(2, new Sigmoid_FCN);
+	myNet.addLayer(1, new Sigmoid_FCN);
 	myNet.setCostFunction(FCNet::CostFunctions::cross_entropy_fcn);
 	myNet.setOptimization(FCNet::Optimiser::grad_desc_fcn, -1); //Use the full on each epoch
 
 	//Train Network --------------------------------
-	myNet.trainNetwork(TrainingSamples, TrainingSamplesClasses, 150, 0.01, true);
+	myNet.trainNetwork(TrainingSamples, TrainingSamplesClasses, 1, 0.01, true);
 
 	//Use the Network to predict output --------------------------------
 	std::cout << "Training--------- \n";

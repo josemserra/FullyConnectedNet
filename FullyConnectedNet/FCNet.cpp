@@ -70,9 +70,17 @@ bool FCNet::trainNetwork(Eigen::MatrixXd X, Eigen::MatrixXi Y,
 	if (!initialiseNetworkStructure())
 		return false;
 
-	
-	//ToDo
+	Eigen::MatrixXd Y_temp = Y.cast <double>();
 
+	for (int epochIdx = 0; epochIdx < numEpochs; epochIdx++) {
+		std::vector<Eigen::MatrixXd> cache_Z;
+		std::vector<Eigen::MatrixXd> cache_A;
+
+		Eigen::MatrixXd preds = ForwardPropagation(X, cache_Z, cache_A);
+
+		//ToDo
+
+	}	
 	return true;
 }
 
@@ -87,6 +95,31 @@ Eigen::MatrixXd FCNet::predict(Eigen::MatrixXd X, double treshold) {
 
 	return Eigen::MatrixXd();
 }
+
+Eigen::MatrixXd FCNet::ForwardPropagation(Eigen::MatrixXd &X, std::vector<Eigen::MatrixXd>& cache_Z, std::vector<Eigen::MatrixXd>& cache_A) {
+	
+	cache_A.clear();
+	cache_Z.clear();
+	
+	Eigen::MatrixXd A;
+	A = X;
+
+	for (int layerIdx = 0; layerIdx < numHiddenLayers; layerIdx++) {
+
+		Eigen::MatrixXd Z = layers_weights[layerIdx] * A;
+		Z.colwise() += layers_b[layerIdx];
+
+		A = Z;
+		std::get<1>(layersInfo[layerIdx])->forwardPass(A);
+
+		cache_A.push_back(A);
+		cache_Z.push_back(Z);
+	}
+
+	return A;
+}
+
+
 
 void FCNet::drawPlot(cimg_library::CImgDisplay& disp, std::vector<double> x, std::vector<double> y,
 	double minX, double maxX, double minY, double maxY,

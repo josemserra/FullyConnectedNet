@@ -48,6 +48,8 @@ private:
 	//Initialises the weights and biases for each layer
 	bool initialiseNetworkStructure();
 
+	// Forward Pass on the current network for the given input samples X
+	Eigen::MatrixXd ForwardPropagation(Eigen::MatrixXd &X, std::vector<Eigen::MatrixXd>& cache_Z, std::vector<Eigen::MatrixXd>& cache_A);
 
 	//Network properties
 	int inputLayerSize = 0;
